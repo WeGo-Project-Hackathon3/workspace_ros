@@ -68,11 +68,11 @@ $ pip install -r requirements.txt
 
 workspace_ros 
 
-​			|_ src
+> |_ src  
 
-​						|_ scout_mini_ros
-
-​						|_ scripts
+> > |_ scout_mini_ros
+> >
+> > |_ scripts
 
 
 
@@ -96,15 +96,15 @@ $ catkin_make
 
 workspace_ros 
 
-​			|_ src
+> |_ src
 
-​			|_ build
+> |_ build
 
-​			|_ devel
+> |_ devel
 
-​						|_ scout_mini_ros
+> > |_ scout_mini_ros
 
-​						|_ scripts
+> > |_ scripts
 
 이 구조에서,  src 폴더로 이동하여 다음 명령을 수행합니다.
 
