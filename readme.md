@@ -134,23 +134,29 @@ __scout_bringup 폴더 아래에 scripts 폴더를 넣어주시면, .py 를 실�
 ```
 # local에서 실행하는 경우
 $ cd [워크스페이스]/src/scout_mini_ros/scout_bringup/scripts
-$ python3  cv_tracking_hand_depth_cam.py
+$ python3  cv_tracking_hand_depth_cam_final.py
 ```
 </br>
 
-#### ros 위에서 실행
+#### ros 위에서 실행 (확인 필수!!!)
 - ros를 사용할 터미널은 <b>`$ source devel/setup.bash`</b>를 반드시 해주어야 한다.
-- main으로 사용할 python file 가장 위에 local의 python 환경 위치를 주석으로 적어주어야 한다. </br>
+- main으로 사용할 python file 가장 위에 local의 <b>python 환경 위치를 주석</b>으로 적어주어야 한다. </br>
   ex) #! /usr/bin/python 
-  - 자신의 python 환경 위치는 터미널에 `$ which python`으로 확인이 가능하다.
+  - 자신의 python 환경 위치는 터미널에 `$ which python`으로 확인이 가능하다. </br>
+- 각 단계별로 터미널을 새로 켜주어야 합니다.
 
 </br>
 
 1-1. ROS-STmini 연결 
+[터미널 A]
+
 ```
 $ cd [워크스페이스]
 $ source devel/setup.bash
+$ rosrun scout_bringup setup_can2usb.bash  
+[위 명령어는 최초 실행 1번만 설정하면 됩니다.]
 $ rosrun scout_bringup bringup_can2usb.bash
+[ST-mini와 연결할때마다 can 통신 설정을 해주어야 합니다.]
 ```
 
 환경 setup 후 ST-mini와 can 통신 연결
@@ -161,6 +167,8 @@ $ roslaunch scout_bringup scout_minimal.launch
 
 
 1-2. ROS Gazebo 연결
+[터미널 A]
+
 ```
 $ cd [워크스페이스]
 $ source devel/setup.bash
@@ -169,12 +177,14 @@ $ roslaunch scout_bringup scout_mini_base_gazebo_sim.launch
 
 
 2-1. .../scout_bringup/scripts/ 내부 py 파일 실행 
+[터미널 B]
 
 ```
 $ rosrun scout_bringup cv_tracking_hand_depth_cam.py
 ```
 
 2-2. 키보드로 조정하고 싶은 경우 
+[터미널 B or c]
 
 ```
 roslaunch scout_bringup scout_teleop_keyboard.launch
