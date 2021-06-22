@@ -4,7 +4,7 @@ from geometry_msgs.msg import Twist
 # ros 동작 publish 관련 함수
 def get_move(W,track_w, hand_center, H=0, track_H=0, init_chk = False ):
     twist = Twist()
-    z_bias_1 = 0.05
+    z_bias_1 = 0.02
 
 
     # angular cma의 중앙을 0으로 둔 후 가장 왼쪽과 오른쪽을 -1, 1로 두는 계산을한다. 
@@ -20,17 +20,17 @@ def get_move(W,track_w, hand_center, H=0, track_H=0, init_chk = False ):
         angular_chk = -1
     
     # 최소값 정의 angular
-    if abs(angular_z) <= 0.18 :#3+ abs(z_bias_1) :
+    if abs(angular_z) <= 0.19 :#3+ abs(z_bias_1) :
         angular_z = 0.0
     # 최대 값 정의 angular 
     elif abs(angular_z) > 0.5 :
         angular_z = 0.68 * angular_chk
     else : 
-        angular_z +=z_bias_1
+        angular_z += (angular_chk * z_bias_1 )
     
     # linear_x 고정값 
     # 실내에서 동작하는 경우 기준
-    linear_x =  0.34
+    linear_x =  0.23
 
     #print("angular_z : ", angular_z) # cam 상에서 내 위치 : - right   + left   실제 적용해야하는 값 : +  right,    - left  (화면이 반대이므로)
     #print("linear_x : ", linear_x) # - right   + left서

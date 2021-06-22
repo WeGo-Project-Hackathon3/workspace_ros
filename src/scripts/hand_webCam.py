@@ -51,7 +51,6 @@ def hand_detection(cap, x_min= 260, y_min = 120) : # joo.jg 주석   webcam 사�
     action = ''
     hand_gesture = {0:'stop', 5:'move', 10:'ok'}
     
-    cap = cv2.VideoCapture(-1)
     _, frame = cap.read() #joo.jg 주석처리 
     hand_x, hand_y, hand_w, hand_h =0,0,0,0
 
@@ -181,6 +180,6 @@ def hand_detection(cap, x_min= 260, y_min = 120) : # joo.jg 주석   webcam 사�
 
     return action,  (hand_x, hand_y, hand_w, hand_h)
 
-#if __name__ == '__main__': # joo.jg 주석 
-    #cap = cv2.VideoCapture(-1)
-    #hand_detection(cap)
+if __name__ == '__main__': # joo.jg 주석 
+    cap = cv2.VideoCapture(-1)
+    hand_detection(cap)

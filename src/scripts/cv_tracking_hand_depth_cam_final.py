@@ -144,8 +144,8 @@ def main(video_path,pub):
             boxes=tf.reshape(boxes, (tf.shape(boxes)[0], -1, 1, 4)),
             scores=tf.reshape(
                 pred_conf, (tf.shape(pred_conf)[0], -1, tf.shape(pred_conf)[-1])),
-            max_output_size_per_class=35,
-            max_total_size=35,
+            max_output_size_per_class=40,
+            max_total_size=40,
             iou_threshold=IOU_THRESHOLD,
             score_threshold=SCORE_THRESHOLD
         )
@@ -176,7 +176,6 @@ def main(video_path,pub):
 
             if action == '' :
                 x_min, y_min = bboxes[0][:2]
-                #y_min = int(max(y_min-20, 0)); x_min = int(max(x_min-10, 0))
                 action, (hand_x, hand_y, hand_w, hand_h) = hand_detection(dc, x_min, y_min)
 
             hand_center = (hand_x + hand_w//2)
@@ -248,7 +247,6 @@ def main(video_path,pub):
         if not init_first :
 
             (success, box) = tracker.update(frame)
-
             
             depth_dist = 0
             if  success  :
@@ -258,7 +256,7 @@ def main(video_path,pub):
                 
                 # update 하기 위한 initBB 
                 diff_dist =  round( np.linalg.norm( ((pre_initBB[0]) /W) - ((x+ w//2)/W) ),2)
-                if diff_dist > 0.23 :
+                if diff_dist > 0.18 :
                     print("track bounding box 위치 문제 발생") 
                     x = pre_initBB[0]
                     y = pre_initBB[1] 
@@ -279,11 +277,11 @@ def main(video_path,pub):
                 # ==========================   process pool _move (end)  =========================
                 init_chk= False
             
-            #ln_bboxes = len(bboxes) 
+            ln_bboxes = len(bboxes) 
             # depth cam으로 쟀을때 거리가 만족되는 경우 
             if ok :
                 # =================== 21.06.19 수정 =============
-                if num_objects >=1 :
+                if ln_bboxes >=1 :
                     pre_frame_chk = frame_number
 
                     # ----- 2021 06 - 22 코드 수정 ----
@@ -300,28 +298,28 @@ def main(video_path,pub):
                             pub.publish(twist)
 
 
-                elif num_objects < 1 :
-                    twist.linear.x = linear_x_pre/2
+                elif ln_bboxes < 1 :
+                    twist.linear.x = 0.0
                     twist.angular.z = angular_z_pre/2
                     pub.publish(twist)
 
             else : 
             # 거리가 일정 범위를 넘어가거나 가까운 경우
-                if num_objects < 1:
+                if ln_bboxes < 1:
                     # cam에 사람이 없고 너무 가까운 경우 후진 후 이전 회전에 절반정도 진행
                     if depth_dist < 1.45 :
-                        twist.linear.x =  -0.1 ; twist.angular.z = angular_z_pre/2 
+                        twist.linear.x =  -0.15 ; twist.angular.z = angular_z_pre/2 
                     else :
                         # 거리가 일정 범위 이상 떨어진 경우 앞으로 전진
-                        twist.linear.x =  0.3 ; twist.angular.z = angular_z_pre/2
+                        twist.linear.x =  0.1 ; twist.angular.z = angular_z_pre/2
                 else :
                     # 1명 이상의 사람이 화면에 있는 경우
                     # 가까운 경우 뒤로 조금 이동, 이전 angular의 절만만큼 이동 
                     if depth_dist < 1.45 :
-                        twist.linear.x =  -0.1 ; twist.angular.z = angular_z_pre/2 
+                        twist.linear.x =  -0.15 ; twist.angular.z = angular_z_pre/2 
                     else :
                         # 거리가 일정 범위 이상 떨어진 경우 앞으로 전진
-                        twist.linear.x =  0.3 ; twist.angular.z = angular_z_pre*0.4
+                        twist.linear.x =  0.1 ; twist.angular.z = angular_z_pre*0.4
                 pub.publish(twist)
 
             occlusion = False
