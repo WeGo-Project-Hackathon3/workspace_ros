@@ -70,9 +70,9 @@ workspace_ros
 
 ​			|_ src
 
-​					|_ scout_mini_ros
+​						|_ scout_mini_ros
 
-​					|_ scripts
+​						|_ scripts
 
 
 
@@ -102,9 +102,9 @@ workspace_ros
 
 ​			|_ devel
 
-​					|_ scout_mini_ros
+​						|_ scout_mini_ros
 
-​					|_ scripts
+​						|_ scripts
 
 이 구조에서,  src 폴더로 이동하여 다음 명령을 수행합니다.
 
